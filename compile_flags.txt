@@ -1,0 +1,4 @@
+-Iexternal/imgui/
+-Iexternal/rlImGui/
+-DPLATFORM_DESKTOP
+-Wall
