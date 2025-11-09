@@ -1,7 +1,7 @@
 #include <rlImGui.h>
 #include <raylib.h>
 #include <string>
-#include "imgui.h"
+#include <imgui.h>
 #include "../ui/windows.hpp"
 
 int main() {

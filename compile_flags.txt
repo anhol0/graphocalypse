@@ -1,4 +1,5 @@
 -Iexternal/imgui/
 -Iexternal/rlImGui/
+-Iexternal/raylib/src
 -DPLATFORM_DESKTOP
 -Wall
