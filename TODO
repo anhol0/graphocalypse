@@ -12,7 +12,7 @@ Modifier slots are infinitely expandable but the more complex combination is, th
 Basic engine:
   ✔ Write the widget creation algorithms for UI @done(25-11-09 17:06)
   ✔ Raylib-specific in-game ui logic (not menus) @started(25-11-09 17:06) @done(25-11-09 18:18) @lasted(1h12m32s)
-  ☐ Write system that allows creating different scenes and swapping them
+  ✔ Write system that allows creating different scenes and swapping them @done(25-11-09 22:23)
   Math:
     ☐ Write math function parsing
     ☐ Math function graph rendering

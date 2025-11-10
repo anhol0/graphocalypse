@@ -34,6 +34,16 @@ class Button {
       DrawRectangleRec(button, color);
     }
 
+    void Draw(Color color, Text text, float cornerRadius) {
+      DrawRectangleRounded(button, cornerRadius, 1, color);
+      if(!text.text.empty()) {
+        int textWidth = MeasureText(text.text.c_str(), text.fontSize);
+        int textX = button.x + (button.width - textWidth) / 2;
+        int textY = button.y + (button.height - text.fontSize) / 2;
+        DrawText(text.text.c_str(), textX, textY, text.fontSize, text.textColor);        
+      }
+    }
+
     int Clicked() {
       if (CheckCollisionPointRec(GetMousePosition(), button) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
         return 1;
