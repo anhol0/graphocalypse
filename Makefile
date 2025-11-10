@@ -21,7 +21,7 @@ TARGET = $(BUILD_DIR)/graphocalypse
 CXX = g++
 CC = gcc
 
-all: $(TARGET)
+all: clean $(TARGET)
 
 run: $(TARGET)
 	./$(TARGET)
@@ -48,4 +48,7 @@ $(RAYLIB_LIB):
 	fi
 
 clean:
+	rm -rf $(BUILD_DIR)
+
+clean-all:
 	rm -rf $(BUILD_DIR) $(IMGUI_LIB) $(RLIMGUI_LIB) $(RAYLIB_LIB)

@@ -1,6 +1,7 @@
-#include <functional>
+#pragma once
 #ifndef WINDOWS_HPP
 
+#include <functional>
 #include "imgui.h"
 
 class Window {
