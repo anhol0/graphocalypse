@@ -11,6 +11,7 @@ int HEIGHT = 600;
 
 sceneManager sceneManager;
 bool showFps = false;
+bool closeWindow = false;
 
 int main() {
   InitWindow(WIDTH, HEIGHT, "graphocalypse");
@@ -20,7 +21,8 @@ int main() {
   Font departureMono = LoadFont("/usr/share/fonts/NotoSansNerdFontPropo-CondensedBoldItalic.ttf");
 
   sceneManager.addScene(0, std::make_shared<MainMenu>());
-  sceneManager.addScene(1, std::make_shared<SecondaryMenu>());
+  sceneManager.addScene(1, std::make_shared<SettingsMenu>());
+  sceneManager.addScene(2, std::make_shared<PrepareForRunScene>());
   sceneManager.activateScene(0);
 
   while(!WindowShouldClose()) {
@@ -31,6 +33,12 @@ int main() {
     sceneManager.updateCurrentScene();
     sceneManager.Draw();
 
+    if(closeWindow) {
+      rlImGuiEnd();
+      EndDrawing();
+      CloseWindow();
+      break;
+    }
     if(showFps) {
       DrawText(std::to_string(GetFPS()).c_str(), WIDTH - MeasureText(std::to_string(GetFPS()).c_str(), 30), 0, 30, BLACK);
     }

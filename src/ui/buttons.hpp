@@ -35,7 +35,7 @@ class Button {
     }
 
     void Draw(Color color, Text text, float cornerRadius) {
-      DrawRectangleRounded(button, cornerRadius, 1, color);
+      DrawRectangleRounded(button, cornerRadius, 3, color);
       if(!text.text.empty()) {
         int textWidth = MeasureText(text.text.c_str(), text.fontSize);
         int textX = button.x + (button.width - textWidth) / 2;

@@ -19,7 +19,6 @@ LDFLAGS = -lraylib\
 BUILD_DIR = build
 TARGET = $(BUILD_DIR)/graphocalypse
 CXX = g++
-CC = gcc
 
 all: clean $(TARGET)
 
