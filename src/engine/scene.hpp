@@ -2,7 +2,6 @@
 #include "../ui/windows.hpp"
 #include "../ui/buttons.hpp"
 #include "raylib.h"
-#include <iostream>
 #include <raylib.h>
 
 using SceneId = int;
@@ -10,6 +9,7 @@ using SceneId = int;
 extern int WIDTH, HEIGHT;
 extern bool showFps;
 extern bool closeWindow;
+extern Font chakraPetch;
 
 class Scene {
 public:
@@ -51,7 +51,6 @@ class MainMenu : public Scene {
   }
   int buttonWidth = 200, buttonHeight = 50;
   int offset = 15;
-  Font chakraPetch = LoadFont("src/assets/chakra_petch/ChakraPetch-Bold.ttf");
   Vector2 gameLogoSize = MeasureTextEx(chakraPetch, "GRAPHOCALYPSE", 90, 1);
   Button Start = Button((float)(WIDTH - buttonWidth) / 2, (float)(HEIGHT - buttonHeight) / 2 - (buttonHeight + offset), buttonWidth, buttonHeight);
   Button Settings = Button((float)(WIDTH - buttonWidth) / 2, (float)(HEIGHT - buttonHeight) / 2, buttonWidth, buttonHeight);
@@ -99,7 +98,6 @@ class SettingsMenu : public Scene {
           ImGui::EndMenuBar();
         }
       });
-      std::cout << "Settings menu opened" << std::endl;
     }
     
     void Update() override {
