@@ -12,6 +12,7 @@ int HEIGHT = 600;
 sceneManager sceneManager;
 bool showFps = false;
 bool closeWindow = false;
+Font chakraPetch;
 
 int main() {
   SetConfigFlags(FLAG_MSAA_4X_HINT);
@@ -19,8 +20,7 @@ int main() {
   rlImGuiSetup(true);
   SetTargetFPS(60);
   ImGui::GetIO().IniFilename = nullptr;
-  Font chakraPetch = LoadFontEx("src/assets/chakra_petch/ChakraPetch-Bold.ttf", 128, 0, 0);
-
+  chakraPetch = LoadFontEx("src/assets/chakra_petch/ChakraPetch-Bold.ttf", 128, 0, 0);
 
   sceneManager.addScene(0, std::make_shared<MainMenu>());
   sceneManager.addScene(1, std::make_shared<SettingsMenu>());

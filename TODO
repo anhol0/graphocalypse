@@ -18,8 +18,6 @@ Basic engine:
     ☐ Math function graph rendering
     ☐ Equation building algorithm
   Character and creatures:
-    ☐ Character creation
-    ☐ Animations for creatures (possibly procedurally generated)
     ☐ Movement system
 UI: 
   ☐ Weapon editor that allows to create, preview, save, buff and delete saved weapons
@@ -32,30 +30,24 @@ In-game mechanics:
   ☐ Cut scenes when met with the boss
   ☐ Different types of mobes
   Bosses:
-    ☐ Randomly generated bosses with their own (probably generated) math weapons
-    ☐ Player cannot meet the boss with unavailable for them equation weapon
+    ☐ Randomly generated bosses with their own (probably generated) weapons
+    ☐ Player can meet the boss with unavailable for them equation weapon
     ☐ Bosses can lose function depending on where player hit them
     ☐ Bosses can use secondary function weapon
   Enemies:
-    ☐ Have simpler function weapons
+    ☐ Have simpler weapons
     ☐ Can have special abilities or resistance to weapons that have a certain type of function inside (for example, resistance for trigs)
     ☐ Can drop artefacts or heal vectors
-    ☐ Can explode with a certain chance
 Weapon design:
-  ☐ Render the equation that represents the weapon
-  Different fire styles:
-    ☐ Laser
-    ☐ Projectile
-    ☐ Sword
   ☐ Make cost of use depending on number of functions used
   ☐ Make progression system where you can unlock new functions by finding them/buying them
 
 Physics:
-  ☐ Write basic physics for movement
+  ☐ Write basic movement
   ☐ Phycics for the weapons
   ☐ Physics for the enemies
 MODS:
-  ☐ Write dynamic shared library loader (mods)
+  ☐ Write dynamic shaphysics for red library loader (mods)
   ☐ Write the basic SDK
   ☐ Write the docs for the SDK
 
