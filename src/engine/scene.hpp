@@ -1,8 +1,8 @@
 #pragma  once
 #include "../ui/windows.hpp"
 #include "../ui/buttons.hpp"
+#include "imgui.h"
 #include "raylib.h"
-#include <raylib.h>
 
 using SceneId = int;
 
@@ -10,6 +10,7 @@ extern int WIDTH, HEIGHT;
 extern bool showFps;
 extern bool closeWindow;
 extern Font chakraPetch;
+extern ImFont* imguiFont;
 
 class Scene {
 public:
@@ -65,40 +66,20 @@ class SettingsMenu : public Scene {
   void Init() override {
     button = Button((float)(WIDTH - 210)/2, (float)(HEIGHT - 50) / 2, 210, 50);
     window.setContents([&]() {
-      ImGui::SetWindowSize(ImVec2(200, 200));
-      ImGui::Text("Test Text");
-      if(ImGui::Button("Show FPS")) {
+      float windowHeight = (float)(HEIGHT)/4;
+      float windowWidth = (float)(WIDTH)/4;
+      ImGui::SetWindowSize(ImVec2(windowWidth, windowHeight));
+      ImGui::SetWindowPos(ImVec2((WIDTH-windowWidth)/2,(HEIGHT-windowWidth)/2));
+      ImGui::PushFont(imguiFont);
+      ImGui::PushStyleVar(ImGuiStyleVar_FrameRounding, 15.f);
+      ImGui::Text("Settings");
+      if(ImGui::Button("Show FPS", ImVec2(windowWidth, windowHeight/8))) {
         showFps ^= true;
       }
-      if(ImGui::BeginMenuBar()) {
-        if(ImGui::BeginMenu("Choose screen resolution")) {
-          if(ImGui::MenuItem("1920x1080")) {
-            WIDTH = 1920, HEIGHT = 1080; 
-            SetWindowSize(WIDTH, HEIGHT); 
-            SetWindowPosition(
-              (GetScreenWidth() - WIDTH) / 2, 
-              (GetScreenHeight() - HEIGHT) / 2); 
-            }
-          if(ImGui::MenuItem("1280x720")) {
-            WIDTH = 1280, HEIGHT = 720; 
-            SetWindowSize(WIDTH, HEIGHT); 
-            SetWindowPosition(
-              (GetScreenWidth() - WIDTH) / 2, 
-              (GetScreenHeight() - HEIGHT) / 2);
-            }
-            if(ImGui::MenuItem("800x600")) {
-            WIDTH = 800, HEIGHT = 600; 
-            SetWindowSize(WIDTH, HEIGHT); 
-            SetWindowPosition(
-              (GetScreenWidth() - WIDTH) / 2, 
-              (GetScreenHeight() - HEIGHT) / 2);
-            }
-            ImGui::EndMenu();
-          }
-          ImGui::EndMenuBar();
-        }
-      });
-    }
+      ImGui::PopStyleVar();
+      ImGui::PopFont();
+    });
+  }
     
     void Update() override {
       if(button.Clicked()) {
@@ -117,7 +98,7 @@ class SettingsMenu : public Scene {
     window.draw();
   }
   Button button;
-  Window window = Window("some text", ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize);
+  Window window = Window("some text", ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoDecoration);
   Color color = BLACK;
 };
 

@@ -6,21 +6,28 @@
 #include "scene.hpp"
 #include "sceneManager.hpp"
 
-int WIDTH = 800;
-int HEIGHT = 600;
+int WIDTH, HEIGHT;
 
 sceneManager sceneManager;
 bool showFps = false;
 bool closeWindow = false;
 Font chakraPetch;
+ImFont* imguiFont;
 
 int main() {
   SetConfigFlags(FLAG_MSAA_4X_HINT);
+  SetConfigFlags(FLAG_FULLSCREEN_MODE);
   InitWindow(WIDTH, HEIGHT, "graphocalypse");
+  WIDTH = GetScreenWidth();
+  HEIGHT = GetScreenHeight();
   rlImGuiSetup(true);
   SetTargetFPS(60);
-  ImGui::GetIO().IniFilename = nullptr;
+  ImGuiIO& io = ImGui::GetIO();
+  io.IniFilename = nullptr;
   chakraPetch = LoadFontEx("src/assets/chakra_petch/ChakraPetch-Bold.ttf", 128, 0, 0);
+  io.Fonts->AddFontDefault();
+  imguiFont = io.Fonts->AddFontFromFileTTF("src/assets/chakra_petch/ChakraPetch-Bold.ttf", 30.f); 
+  io.Fonts->Build();
 
   sceneManager.addScene(0, std::make_shared<MainMenu>());
   sceneManager.addScene(1, std::make_shared<SettingsMenu>());
