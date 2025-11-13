@@ -6,8 +6,8 @@
 #include "scene.hpp"
 #include "sceneManager.hpp"
 
-int WIDTH = 800;
-int HEIGHT = 600;
+int WIDTH;
+int HEIGHT;
 
 sceneManager sceneManager;
 bool showFps = false;
@@ -17,6 +17,8 @@ Font chakraPetch;
 int main() {
   SetConfigFlags(FLAG_MSAA_4X_HINT);
   InitWindow(WIDTH, HEIGHT, "graphocalypse");
+  WIDTH = GetScreenWidth();
+  HEIGHT = GetScreenHeight();
   rlImGuiSetup(true);
   SetTargetFPS(60);
   ImGui::GetIO().IniFilename = nullptr;
