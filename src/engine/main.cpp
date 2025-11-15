@@ -7,7 +7,7 @@
 #include "sceneManager.hpp"
 
 int WIDTH, HEIGHT;
-
+float aspectRatio;
 sceneManager sceneManager;
 bool showFps = false;
 bool closeWindow = false;
@@ -16,10 +16,11 @@ ImFont* imguiFont;
 
 int main() {
   SetConfigFlags(FLAG_MSAA_4X_HINT);
-  SetConfigFlags(FLAG_FULLSCREEN_MODE);
-  InitWindow(WIDTH, HEIGHT, "graphocalypse");
+  // SetConfigFlags(FLAG_FULLSCREEN_MODE);
+  InitWindow(WIDTH, HEIGHT, "Perlin Noise Gen");
   WIDTH = GetScreenWidth();
   HEIGHT = GetScreenHeight();
+  aspectRatio = (float)(WIDTH)/HEIGHT;
   rlImGuiSetup(true);
   SetTargetFPS(60);
   ImGuiIO& io = ImGui::GetIO();
@@ -30,8 +31,7 @@ int main() {
   io.Fonts->Build();
 
   sceneManager.addScene(0, std::make_shared<MainMenu>());
-  sceneManager.addScene(1, std::make_shared<SettingsMenu>());
-  sceneManager.addScene(2, std::make_shared<PrepareForRunScene>());
+  sceneManager.addScene(1, std::make_shared<Generator>());
   sceneManager.activateScene(0);
 
   while(!WindowShouldClose()) {
@@ -51,7 +51,7 @@ int main() {
     if(showFps) {
       DrawText(std::to_string(GetFPS()).c_str(), WIDTH - MeasureText(std::to_string(GetFPS()).c_str(), 30), 0, 30, BLACK);
     }
-    DrawTextEx(chakraPetch, "graphocalypse v0.0.1", Vector2{(float)(WIDTH-MeasureTextEx(chakraPetch, "graphocalypse v0.0.1", 30, 1.f).x), (float)(HEIGHT - MeasureTextEx(chakraPetch, "graphocalypse v0.0.1", 30, 1.f).y)}, 30, 1.f, BLACK);
+    DrawTextEx(chakraPetch, "Perlin noise generator v0.0.1", Vector2{(float)(WIDTH-MeasureTextEx(chakraPetch, "Perlin noise generator v0.0.1", 30, 1.f).x), (float)(HEIGHT - MeasureTextEx(chakraPetch, "graphocalypse v0.0.1", 30, 1.f).y)}, 30, 1.f, BLACK);
     rlImGuiEnd();
     EndDrawing();
   }
