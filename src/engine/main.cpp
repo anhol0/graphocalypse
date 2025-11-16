@@ -12,7 +12,7 @@ sceneManager sceneManager;
 bool showFps = false;
 bool closeWindow = false;
 Font chakraPetch;
-ImFont* imguiFont;
+ImFont* imguiFont; 
 
 int main() {
   SetConfigFlags(FLAG_MSAA_4X_HINT);

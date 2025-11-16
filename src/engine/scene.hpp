@@ -53,26 +53,45 @@ class MainMenu : public Scene {
 class Generator : public Scene {
   void Init() override {
     window.setContents([&]() {
-      if(ImGui::Button("Degenerate")) {
-        drawn ^= true;
-        if(drawn) {
-          
-        }
-      }
-      ImGui::SliderFloat("Resolution", &width, 100, 700);
+    if (ImGui::Button("Regenerate")) {
+      redraw = true;
+    }
+
+    if (ImGui::SliderFloat("Resolution", &size, 100, 700)) {
+      redraw = true; 
+    }
+
+    if (ImGui::SliderFloat("Scale", &scale, 0.001f, 0.1f)) {
+      redraw = true; 
+    }
+
+    if(ImGui::InputInt("Enter seed", &seed)) {
+      redraw = true;
+    }
+
+    if(ImGui::Button("Clear seed")) {
+      seed = 0;
+      redraw = true;
+    }
     });
   }
+
   void Update() override {
-    height = width;
-    if(drawn) {
-      DrawRectangle((WIDTH-width)/2,( HEIGHT-height)/2, width, height, BLACK);
+    if(redraw) {
+      PerlinNoise noise = (seed != 0) ? PerlinNoise(size, scale, seed) : PerlinNoise(size, scale);
+      Image image = noise.genImage();
+      tex = LoadTextureFromImage(image);
+      redraw = false;
     }
+    DrawTexture(tex, (WIDTH-size)/2,( HEIGHT-size)/2, WHITE);
   }
   void Render() override {
     window.draw();
   }
-  bool drawn = false;  
-  float width = 500;
-  float height = width;
+  int seed = 0;
+  bool redraw = false;
+  float size = 256;
+  float scale = 0.02;
+  Texture2D tex;
   Window window = Window("Options", ImGuiWindowFlags_NoCollapse);
 };
