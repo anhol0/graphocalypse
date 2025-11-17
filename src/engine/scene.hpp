@@ -52,27 +52,37 @@ class MainMenu : public Scene {
 
 class Generator : public Scene {
   void Init() override {
+    camera.position = Vector3{cameraPos, cameraPos, cameraPos};
+    camera.fovy = 45.0f;
+    camera.target = cubePosition;
+    camera.up = {0.0f, 1.0f, 0.0f};
+    camera.projection = CAMERA_PERSPECTIVE;
     window.setContents([&]() {
-    if (ImGui::Button("Regenerate")) {
-      redraw = true;
-    }
+      if (ImGui::Button("Regenerate")) {
+        redraw = true;
+      }
 
-    if (ImGui::SliderFloat("Resolution", &size, 100, 700)) {
-      redraw = true; 
-    }
+      if (ImGui::SliderFloat("Resolution", &size, 100, 700)) {
+        redraw = true; 
+      }
 
-    if (ImGui::SliderFloat("Scale", &scale, 0.001f, 0.1f)) {
-      redraw = true; 
-    }
+      if (ImGui::SliderFloat("Scale", &scale, 0.001f, 0.1f)) {
+        redraw = true; 
+      }
 
-    if(ImGui::InputInt("Enter seed", &seed)) {
-      redraw = true;
-    }
+      if(ImGui::InputInt("Enter seed", &seed)) {
+        redraw = true;
+      }
 
-    if(ImGui::Button("Clear seed")) {
-      seed = 0;
-      redraw = true;
-    }
+      if(ImGui::Button("Clear seed")) {
+        seed = 0;
+        redraw = true;
+      }
+    });
+    cameraControls.setContents([&]() {
+      if(ImGui::SliderFloat("Scale", &cameraPos, 3.0, 100.0f)) {
+        camera.position = Vector3{cameraPos, cameraPos, cameraPos};
+      }
     });
   }
 
@@ -83,15 +93,27 @@ class Generator : public Scene {
       tex = LoadTextureFromImage(image);
       redraw = false;
     }
+    BeginMode3D(camera);
+    DrawCube(cubePosition, cubeSize.x, cubeSize.y, cubeSize.z, GRAY);
+    DrawCubeWires(cubePosition, cubeSize.x, cubeSize.y, cubeSize.z, DARKGRAY);
+    EndMode3D();
     DrawTexture(tex, (WIDTH-size)/2,( HEIGHT-size)/2, WHITE);
   }
+
   void Render() override {
     window.draw();
+    cameraControls.draw();
   }
+
   int seed = 0;
   bool redraw = false;
   float size = 256;
   float scale = 0.02;
+  float cameraPos = 3.0f;
   Texture2D tex;
+  Vector3 cubePosition = Vector3{0.0f};
+  Vector3 cubeSize = Vector3{0.1f, 0.1f, 0.1f};
+  Camera3D camera;
   Window window = Window("Options", ImGuiWindowFlags_NoCollapse);
+  Window cameraControls = Window("Camera controld", ImGuiWindowFlags_NoCollapse);
 };

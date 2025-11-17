@@ -4,12 +4,14 @@
 #include <cmath>
 #include <cstdint>
 #include <random>
+#include <vector>
 
 class PerlinNoise {
 public:
   PerlinNoise(int size, float scale);
   PerlinNoise(int size, float scaleLocal, std::uint32_t seed);
   Image genImage();
+  std::vector<uint8_t> getPerlinNoiseData();
 
   private:
   int width, height;
@@ -50,6 +52,21 @@ Image PerlinNoise::genImage() {
   }
   return image;
 }
+
+std::vector<uint8_t> PerlinNoise::getPerlinNoiseData() {
+  std::vector<uint8_t> noiseData;
+  noiseData.reserve(width * height);
+  for(int y = 0; y < height; y++) {
+    for(int x = 0; x < width; x++) {
+      double temp = perlin(x*scale, y*scale);
+      uint8_t color = (uint8_t)((temp+1) * 0.5 * 255);
+      noiseData.push_back(color);
+    }
+  }
+  return noiseData;
+}
+
+
 
 double PerlinNoise::perlin(double x, double y) {
   int xi = int(x)&255;

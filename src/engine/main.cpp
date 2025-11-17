@@ -42,14 +42,15 @@ int main() {
     sceneManager.updateCurrentScene();
     sceneManager.Draw();
 
+    if(showFps) {
+      DrawText(std::to_string(GetFPS()).c_str(), WIDTH - MeasureText(std::to_string(GetFPS()).c_str(), 30), 0, 30, BLACK);
+    }
+
     if(closeWindow) {
       rlImGuiEnd();
       EndDrawing();
       CloseWindow();
       break;
-    }
-    if(showFps) {
-      DrawText(std::to_string(GetFPS()).c_str(), WIDTH - MeasureText(std::to_string(GetFPS()).c_str(), 30), 0, 30, BLACK);
     }
     DrawTextEx(chakraPetch, "Perlin noise generator v0.0.1", Vector2{(float)(WIDTH-MeasureTextEx(chakraPetch, "Perlin noise generator v0.0.1", 30, 1.f).x), (float)(HEIGHT - MeasureTextEx(chakraPetch, "graphocalypse v0.0.1", 30, 1.f).y)}, 30, 1.f, BLACK);
     rlImGuiEnd();
