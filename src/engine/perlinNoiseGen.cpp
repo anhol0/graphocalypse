@@ -67,8 +67,6 @@ std::vector<uint8_t> PerlinNoise::getPerlinNoiseData() {
   return noiseData;
 }
 
-
-
 double PerlinNoise::perlin(double x, double y) {
   int xi = int(x)&255;
   int yi = int(y)&255;

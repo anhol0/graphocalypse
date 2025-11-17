@@ -65,6 +65,8 @@ class Generator : public Scene {
     camera.up = {0.0f, 1.0f, 0.0f};
     camera.projection = CAMERA_PERSPECTIVE;
     window.setContents([&]() {
+      ImGui::SetWindowSize(ImVec2{400, 400});
+      ImGui::SetWindowPos(ImVec2(0, 0));
       if (ImGui::Button("Regenerate")) {
         redraw = true;
       }
@@ -73,10 +75,11 @@ class Generator : public Scene {
         redraw = true; 
       }
 
-      if (ImGui::SliderFloat("Scale", &scale, 0.001f, 0.1f)) {
+      if (ImGui::SliderFloat("Frqeuqncy", &scale, 0.001f, 0.1f)) {
         redraw = true; 
       }
 
+      ImGui::SliderFloat("Max height", &height, 16, 100);
       if(ImGui::InputInt("Enter seed", &seed)) {
         redraw = true;
       }
@@ -85,10 +88,25 @@ class Generator : public Scene {
         seed = 0;
         redraw = true;
       }
-    });
-    cameraControls.setContents([&]() {
-      if(ImGui::SliderFloat("Scale", &cameraPos, 200.f, 1000.0f)) {
-        camera.position = Vector3{cameraPos, cameraPos, cameraPos};
+      if(ImGui::Button("Animated Rotation")) {
+        rotate ^= true;
+      }
+      if(ImGui::Button("Show 2D noise")) {
+        showNoise2D ^= true;
+      }
+      ImGui::Text("Camera Options");
+      if(ImGui::SliderFloat("Distance", &cameraPos, 200.f, 1000.0f)) {
+        camera.position.x = std::sin(cameraAngle) * cameraPos;
+        camera.position.y = cameraElevation;
+        camera.position.z = std::cos(cameraAngle) * cameraPos;
+      }
+      if(ImGui::SliderFloat("Camera rotation", &cameraAngle, 0, 2*PI)) {
+        camera.position.x = std::sin(cameraAngle) * cameraPos;
+        camera.position.y = cameraElevation;
+        camera.position.z = std::cos(cameraAngle) * cameraPos;
+      }
+      if(ImGui::SliderFloat("Elevation", &cameraElevation, 0, 800)) {
+        camera.position.y = cameraElevation;
       }
       if(ImGui::Button("Show FPS")) {
         showFps ^= 1;
@@ -103,36 +121,53 @@ class Generator : public Scene {
       if(tex.id > 0) { UnloadMesh(map); UnloadTexture(tex); };
       tex = LoadTextureFromImage(image);
       mat.maps[MATERIAL_MAP_ALBEDO].texture = tex;
-      map = GenMeshHeightmap(image, Vector3{size, 48, size});
+      map = GenMeshHeightmap(image, Vector3{size, height, size});
+      currentheight = height;
       redraw = false;
     }
-    glm::mat4 model = glm::mat4(1.0f);
+    if(currentheight != height) {
+      if(tex.id > 0) { UnloadMesh(map); UnloadTexture(tex); };
+      tex = LoadTextureFromImage(image);
+      mat.maps[MATERIAL_MAP_ALBEDO].texture = tex;
+      map = GenMeshHeightmap(image, Vector3{size, height, size});
+      currentheight = height;
+    }
+    model = glm::mat4(1.0f);
     glm::vec3 center(size * 0.5f, 0.0f, size * 0.5f);
-    model = glm::rotate(model, (float)glm::radians(GetTime())*10, glm::vec3(0.0f, 1.0f, 0.0f));
+    if(rotate) {
+      rotationAngle = rotationAngle + 0.01;
+    }
+    model = glm::rotate(model, rotationAngle, glm::vec3(0.0f, 1.0f, 0.0f));
     model = glm::translate(model, -center);
-
-    BeginMode3D(camera);
-    DrawMesh(map, mat, glMatToMatrix(model));
-    EndMode3D();
-
-    DrawTexture(tex, (WIDTH-size),0, WHITE);
   }
 
   void Render() override {
     window.draw();
-    cameraControls.draw();
+    BeginMode3D(camera);
+    DrawMesh(map, mat, glMatToMatrix(model));
+    EndMode3D();
+    if(showNoise2D) {
+      DrawTexture(tex, (WIDTH-size),0, WHITE);
+    }
   }
 
   int seed = 0;
+  bool rotate = true;
   bool redraw = false;
+  bool showNoise2D = false;
+  float rotationAngle = 0;
+  float cameraAngle = 0;
+  float cameraPos = 200.0f;
+  float cameraElevation = cameraPos;
   float size = 256;
   float scale = 0.02;
-  float cameraPos = 200.0f;
+  float height = 16;
+  float currentheight = height;
   Texture2D tex;
   Camera3D camera;
   Image image;
   Mesh map;
+  glm::mat4 model;
   Material mat = LoadMaterialDefault();
-  Window window = Window("Options", ImGuiWindowFlags_NoCollapse);
-  Window cameraControls = Window("Camera controls", ImGuiWindowFlags_NoCollapse);
+  Window window = Window("Options", ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoDecoration);
 };

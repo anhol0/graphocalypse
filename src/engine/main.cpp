@@ -52,7 +52,7 @@ int main() {
       CloseWindow();
       break;
     }
-    DrawTextEx(chakraPetch, "Perlin noise generator v0.0.1", Vector2{(float)(WIDTH-MeasureTextEx(chakraPetch, "Perlin noise generator v0.0.1", 30, 1.f).x), (float)(HEIGHT - MeasureTextEx(chakraPetch, "graphocalypse v0.0.1", 30, 1.f).y)}, 30, 1.f, BLACK);
+    DrawTextEx(chakraPetch, "Perlin noise generator v0.1.1", Vector2{(float)(WIDTH-MeasureTextEx(chakraPetch, "Perlin noise generator v0.0.1", 30, 1.f).x), (float)(HEIGHT - MeasureTextEx(chakraPetch, "graphocalypse v0.0.1", 30, 1.f).y)}, 30, 1.f, BLACK);
     rlImGuiEnd();
     EndDrawing();
   }
