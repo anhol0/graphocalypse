@@ -7,8 +7,10 @@ RLIMGUI_LIB = $(RLIMGUI_DIR)/librlimgui.a
 RAYLIB_DIR = external/raylib/src
 RAYLIB_LIB = $(RAYLIB_DIR)/libraylib.a
 
+RAYLIB_SHADERS = external/raylib/examples/shaders
+
 SOURCES = src/engine/main.cpp 
-INCLUDES = -I$(IMGUI_DIR) -I$(RLIMGUI_DIR) -I$(RAYLIB_DIR)
+INCLUDES = -I$(IMGUI_DIR) -I$(RLIMGUI_DIR) -I$(RAYLIB_DIR) -I$(RAYLIB_SHADERS)
 CFLAGS = -g -Wall
 LDFLAGS = -lraylib\
 				  -ldl \

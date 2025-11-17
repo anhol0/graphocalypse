@@ -1,4 +1,5 @@
 #include "raylib.h"
+#include <rlights.h>
 #include <algorithm>
 #include <array>
 #include <cmath>

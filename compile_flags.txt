@@ -1,5 +1,6 @@
 -Iexternal/imgui/
 -Iexternal/rlImGui/
 -Iexternal/raylib/src
+-Iexternal/raylib/examples/shaders
 -DPLATFORM_DESKTOP
 -Wall

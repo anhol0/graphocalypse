@@ -1,9 +1,16 @@
 #pragma  once
 #include "../ui/windows.hpp"
 #include "../ui/buttons.hpp"
+#include "glMatToMatrix.hpp"
 #include "imgui.h"
 #include "raylib.h"
 #include "perlinNoiseGen.cpp"
+#include <glm/ext/matrix_float4x4.hpp>
+#include <glm/ext/matrix_transform.hpp>
+#include <glm/matrix.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/trigonometric.hpp>
+#include <glm/ext/matrix_transform.hpp>
 
 using SceneId = int;
 
@@ -54,7 +61,7 @@ class Generator : public Scene {
   void Init() override {
     camera.position = Vector3{cameraPos, cameraPos, cameraPos};
     camera.fovy = 45.0f;
-    camera.target = cubePosition;
+    camera.target = Vector3{0, 0, 0};
     camera.up = {0.0f, 1.0f, 0.0f};
     camera.projection = CAMERA_PERSPECTIVE;
     window.setContents([&]() {
@@ -80,8 +87,11 @@ class Generator : public Scene {
       }
     });
     cameraControls.setContents([&]() {
-      if(ImGui::SliderFloat("Scale", &cameraPos, 3.0, 100.0f)) {
+      if(ImGui::SliderFloat("Scale", &cameraPos, 200.f, 1000.0f)) {
         camera.position = Vector3{cameraPos, cameraPos, cameraPos};
+      }
+      if(ImGui::Button("Show FPS")) {
+        showFps ^= 1;
       }
     });
   }
@@ -89,15 +99,23 @@ class Generator : public Scene {
   void Update() override {
     if(redraw) {
       PerlinNoise noise = (seed != 0) ? PerlinNoise(size, scale, seed) : PerlinNoise(size, scale);
-      Image image = noise.genImage();
+      image = noise.genImage();
+      if(tex.id > 0) { UnloadMesh(map); UnloadTexture(tex); };
       tex = LoadTextureFromImage(image);
+      mat.maps[MATERIAL_MAP_ALBEDO].texture = tex;
+      map = GenMeshHeightmap(image, Vector3{size, 48, size});
       redraw = false;
     }
+    glm::mat4 model = glm::mat4(1.0f);
+    glm::vec3 center(size * 0.5f, 0.0f, size * 0.5f);
+    model = glm::rotate(model, (float)glm::radians(GetTime())*10, glm::vec3(0.0f, 1.0f, 0.0f));
+    model = glm::translate(model, -center);
+
     BeginMode3D(camera);
-    DrawCube(cubePosition, cubeSize.x, cubeSize.y, cubeSize.z, GRAY);
-    DrawCubeWires(cubePosition, cubeSize.x, cubeSize.y, cubeSize.z, DARKGRAY);
+    DrawMesh(map, mat, glMatToMatrix(model));
     EndMode3D();
-    DrawTexture(tex, (WIDTH-size)/2,( HEIGHT-size)/2, WHITE);
+
+    DrawTexture(tex, (WIDTH-size),0, WHITE);
   }
 
   void Render() override {
@@ -109,11 +127,12 @@ class Generator : public Scene {
   bool redraw = false;
   float size = 256;
   float scale = 0.02;
-  float cameraPos = 3.0f;
+  float cameraPos = 200.0f;
   Texture2D tex;
-  Vector3 cubePosition = Vector3{0.0f};
-  Vector3 cubeSize = Vector3{0.1f, 0.1f, 0.1f};
   Camera3D camera;
+  Image image;
+  Mesh map;
+  Material mat = LoadMaterialDefault();
   Window window = Window("Options", ImGuiWindowFlags_NoCollapse);
-  Window cameraControls = Window("Camera controld", ImGuiWindowFlags_NoCollapse);
+  Window cameraControls = Window("Camera controls", ImGuiWindowFlags_NoCollapse);
 };

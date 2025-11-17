@@ -16,7 +16,7 @@ ImFont* imguiFont;
 
 int main() {
   SetConfigFlags(FLAG_MSAA_4X_HINT);
-  // SetConfigFlags(FLAG_FULLSCREEN_MODE);
+  SetConfigFlags(FLAG_FULLSCREEN_MODE);
   InitWindow(WIDTH, HEIGHT, "Perlin Noise Gen");
   WIDTH = GetScreenWidth();
   HEIGHT = GetScreenHeight();
@@ -37,7 +37,7 @@ int main() {
   while(!WindowShouldClose()) {
     BeginDrawing();
     rlImGuiBegin();
-    ClearBackground(WHITE);
+    ClearBackground(BLUE);
 
     sceneManager.updateCurrentScene();
     sceneManager.Draw();
