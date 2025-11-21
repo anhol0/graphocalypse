@@ -9,7 +9,7 @@ RAYLIB_LIB = $(RAYLIB_DIR)/libraylib.a
 
 RAYLIB_SHADERS = external/raylib/examples/shaders
 
-SOURCES = src/engine/main.cpp 
+SOURCES = src/engine/main.cpp src/engine/physics/physics.cpp
 INCLUDES = -I$(IMGUI_DIR) -I$(RLIMGUI_DIR) -I$(RAYLIB_DIR) -I$(RAYLIB_SHADERS)
 CFLAGS = -g -Wall
 LDFLAGS = -lraylib\
