@@ -63,8 +63,10 @@ class Generator : public Scene {
     image = noise.genImage();
     tex = LoadTextureFromImage(image);
     mat.maps[MATERIAL_MAP_ALBEDO].texture = tex;
-    map = LoadModelFromMesh(GenMeshHeightmap(image, Vector3{size, height, size}));
-    physics.SetMap(&map);
+    SetMaterialTexture(&mat, MATERIAL_MAP_ALBEDO, tex);
+    map = LoadModelFromMesh(GenMeshHeightmap(image, Vector3{size, height, size}  ));
+    map.materials[0] = mat;
+    physics.SetMap(&image);
     
     window.setContents([&]() {
       ImGui::SetWindowSize(ImVec2{400, 400});
@@ -84,7 +86,8 @@ class Generator : public Scene {
     }
     else if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && 
             GetMousePosition().x > 400 && 
-            GetMousePosition().x > 400 && !IsCursorHidden()) 
+            GetMousePosition().x > 400 && 
+            !IsCursorHidden()) 
     {
       DisableCursor();
     }
@@ -98,7 +101,7 @@ class Generator : public Scene {
     window.draw();
     BeginMode3D(physics.camera);
     DrawModel(map, Vector3{0, 0, 0}, 1.0f, WHITE);
-    DrawModelWires(map, Vector3{0, 0, 0}, 1.0f, BLUE);
+    // DrawModelWires(map, Vector3{0, 0, 0}, 1.0f, BLUE);
     EndMode3D();
     if(showNoise2D) {
       DrawTexture(tex, (WIDTH-size),0, WHITE);
@@ -113,12 +116,12 @@ class Generator : public Scene {
 
   int seed = 0;
   bool showNoise2D = false;
-  float size = 1024; // map size
-  float scale = 0.02; // frequency of changes in map
+  float size = 512; // map size
+  float scale = 0.008; // frequency of changes in map
   float height = 16; // max height when color = 255
   // Physics settings
   float sensitivity = 0.2f;
-  Vector3 initialCameraPos{200, 200, 200};
+  Vector3 initialCameraPos{200, 50, 200};
   // textures and model handling
   Texture2D tex;
   Image image;

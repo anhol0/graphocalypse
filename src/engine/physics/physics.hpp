@@ -13,17 +13,17 @@ class Physics {
     Physics(float gravity, Vector3 cameraPos, float inputSensitivity);
     void Update();
     void PlayerUpdate();
-    void SetMap(Model* map);
+    void SetMap(Image* map);
     void ClearMap();
     ~Physics() = default;
     Camera3D camera;
     Player player;
     float g;
   private:
-    float deltaTime;
+    Image* gameMap = nullptr;
+    Color* pixels;
     bool airBorne;
-    float heightAt(Image map);
-    Ray ray;
-    RayCollision hit;
-    Model* gameMap = nullptr;
+    double prevTime = 0;
+    double dt;
+    int px, pz;
 };
